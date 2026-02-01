@@ -2,18 +2,28 @@ const Post = require("../models/Post");
 
 exports.createPost = async (req, res) => {
   try {
+    console.log('=== CREATE POST DEBUG ===');
+    console.log('Request body:', req.body);
+    console.log('File:', req.file);
+    
     const { text } = req.body;
+    const imageUrl = req.file ? req.file.filename : null;
+    
+    console.log('Text:', text);
+    console.log('Image URL:', imageUrl);
+    console.log('========================');
 
     const newPost = new Post({
       userId: req.user.id,
       username: req.user.username,
       text: text || "",
-      imageUrl: req.file ? req.file.filename : ""
+      imageUrl: imageUrl
     });
 
-    await newPost.save();
+    const savedPost = await newPost.save();
+    console.log('Saved post:', savedPost);
 
-    res.status(201).json({ message: "Post Created Successfully", post: newPost });
+    res.status(201).json({ message: "Post Created Successfully", post: savedPost });
 
   } catch (error) {
     console.error('Error creating post:', error);

@@ -205,7 +205,7 @@ const PostCard = ({ post, onLike, onComment, onDelete, currentUser }) => {
           </Typography>
           
           {/* Post Image */}
-          {post.imageUrl && post.imageUrl.trim() !== "" && (
+          {post.imageUrl && post.imageUrl.trim() !== "" && post.imageUrl !== null && (
             <Box
               sx={{
                 borderRadius: 2,
