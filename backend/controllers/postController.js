@@ -2,16 +2,39 @@ const Post = require("../models/Post");
 
 exports.createPost = async (req, res) => {
   try {
+    console.log('=== CREATE POST DEBUG ===');
+    console.log('Request body keys:', Object.keys(req.body));
     console.log('Request body:', req.body);
     console.log('File:', req.file);
+    console.log('Text field:', req.body.text);
+    console.log('========================');
     
-    const text = req.body.text || "";
+    // Handle text field - ensure it's properly extracted
+    let text = "";
+    if (req.body && req.body.text) {
+      text = req.body.text;
+    } else if (req.body) {
+      // Try to get text from any field
+      const bodyKeys = Object.keys(req.body);
+      for (const key of bodyKeys) {
+        if (key.toLowerCase().includes('text') || key.toLowerCase().includes('content')) {
+          text = req.body[key];
+          break;
+        }
+      }
+    }
 
     const newPost = new Post({
       userId: req.user.id,
       username: req.user.username,
-      text,
+      text: text || "",
       imageUrl: req.file ? req.file.filename : ""
+    });
+
+    console.log('Post to be saved:', {
+      text: newPost.text,
+      imageUrl: newPost.imageUrl,
+      username: newPost.username
     });
 
     await newPost.save();
