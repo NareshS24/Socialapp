@@ -218,7 +218,7 @@ const PostCard = ({ post, onLike, onComment, onDelete, currentUser }) => {
               }}
             >
               <img
-                src={`http://localhost:5000/uploads/${post.imageUrl}`}
+                src={`https://socialapp-backend-xtuo.onrender.com/uploads/${post.imageUrl}`}
                 alt="Post"
                 style={{
                   width: '100%',
