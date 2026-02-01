@@ -219,10 +219,11 @@ const PostCard = ({ post, onLike, onComment, onDelete, currentUser }) => {
               }}
             >
               <img
-                src={`https://socialapp-backend-xtuo.onrender.com/uploads/${post.imageUrl}`}
+                src={`https://socialapp-backend-xtuo.onrender.com/uploads/${encodeURIComponent(post.imageUrl)}`}
                 alt="Post"
                 onError={(e) => {
                   console.log('Image failed to load:', post.imageUrl);
+                  console.log('Tried URL:', `https://socialapp-backend-xtuo.onrender.com/uploads/${encodeURIComponent(post.imageUrl)}`);
                   e.target.style.display = 'none';
                 }}
                 onLoad={() => {
