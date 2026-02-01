@@ -11,7 +11,6 @@ import {
   Paper
 } from '@mui/material';
 import {
-  Image as ImageIcon,
   Send,
   Close,
   PhotoCamera
