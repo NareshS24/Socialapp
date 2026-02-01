@@ -26,7 +26,6 @@ import {
 import CommentSection from './CommentSection';
 
 const PostCard = ({ post, onLike, onComment, onDelete, currentUser }) => {
-  console.log('PostCard - imageUrl:', post.imageUrl, 'post:', post);
   const [liked, setLiked] = useState(post.likes.includes(localStorage.getItem('username')));
   const [likeCount, setLikeCount] = useState(post.likes.length);
   const [showComments, setShowComments] = useState(false);
@@ -222,12 +221,7 @@ const PostCard = ({ post, onLike, onComment, onDelete, currentUser }) => {
                 src={`https://socialapp-backend-xtuo.onrender.com/uploads/${encodeURIComponent(post.imageUrl)}`}
                 alt="Post"
                 onError={(e) => {
-                  console.log('Image failed to load:', post.imageUrl);
-                  console.log('Tried URL:', `https://socialapp-backend-xtuo.onrender.com/uploads/${encodeURIComponent(post.imageUrl)}`);
                   e.target.style.display = 'none';
-                }}
-                onLoad={() => {
-                  console.log('Image loaded successfully:', post.imageUrl);
                 }}
                 style={{
                   width: '100%',

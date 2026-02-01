@@ -34,11 +34,27 @@ exports.createPost = async (req, res) => {
 exports.getAllPosts = async (req, res) => {
   try {
     const posts = await Post.find().sort({ createdAt: -1 });
-    console.log('All posts with imageUrl:');
-    posts.forEach(post => {
-      console.log(`Post ID: ${post._id}, imageUrl: "${post.imageUrl}", text: "${post.text.substring(0, 50)}..."`);
+    
+    // Clean up posts with invalid image URLs
+    const fs = require('fs');
+    const path = require('path');
+    
+    const cleanedPosts = posts.map(post => {
+      if (post.imageUrl) {
+        const imagePath = path.join(__dirname, '..', 'uploads', post.imageUrl);
+        if (!fs.existsSync(imagePath)) {
+          console.log(`Removing invalid imageUrl for post ${post._id}: ${post.imageUrl}`);
+          post.imageUrl = null;
+          // Update the database
+          Post.findByIdAndUpdate(post._id, { imageUrl: null }).catch(err => 
+            console.log('Failed to update post:', err)
+          );
+        }
+      }
+      return post;
     });
-    res.status(200).json(posts);
+    
+    res.status(200).json(cleanedPosts);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
