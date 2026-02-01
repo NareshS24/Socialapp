@@ -53,6 +53,12 @@ const CreatePost = ({ onPostCreated }) => {
         formData.append('image', image);
       }
 
+      // Debug: log FormData contents
+      console.log('FormData contents:');
+      for (let [key, value] of formData.entries()) {
+        console.log(key, value);
+      }
+
       const response = await fetch('https://socialapp-backend-xtuo.onrender.com/api/posts/create', {
         method: 'POST',
         headers: {
@@ -66,6 +72,9 @@ const CreatePost = ({ onPostCreated }) => {
         setImage(null);
         setImagePreview('');
         onPostCreated();
+      } else {
+        const errorData = await response.json();
+        console.error('Server error:', errorData);
       }
     } catch (error) {
       console.error('Error creating post:', error);

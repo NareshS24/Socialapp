@@ -2,7 +2,10 @@ const Post = require("../models/Post");
 
 exports.createPost = async (req, res) => {
   try {
-    const { text } = req.body;
+    console.log('Request body:', req.body);
+    console.log('File:', req.file);
+    
+    const text = req.body.text || "";
 
     const newPost = new Post({
       userId: req.user.id,
@@ -16,6 +19,7 @@ exports.createPost = async (req, res) => {
     res.status(201).json({ message: "Post Created Successfully", post: newPost });
 
   } catch (error) {
+    console.error('Error creating post:', error);
     res.status(500).json({ error: error.message });
   }
 };
