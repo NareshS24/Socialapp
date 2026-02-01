@@ -24,6 +24,10 @@ exports.createPost = async (req, res) => {
 exports.getAllPosts = async (req, res) => {
   try {
     const posts = await Post.find().sort({ createdAt: -1 });
+    console.log('All posts with imageUrl:');
+    posts.forEach(post => {
+      console.log(`Post ID: ${post._id}, imageUrl: "${post.imageUrl}", text: "${post.text.substring(0, 50)}..."`);
+    });
     res.status(200).json(posts);
   } catch (error) {
     res.status(500).json({ error: error.message });

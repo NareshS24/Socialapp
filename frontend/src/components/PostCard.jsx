@@ -26,6 +26,7 @@ import {
 import CommentSection from './CommentSection';
 
 const PostCard = ({ post, onLike, onComment, onDelete, currentUser }) => {
+  console.log('PostCard - imageUrl:', post.imageUrl, 'post:', post);
   const [liked, setLiked] = useState(post.likes.includes(localStorage.getItem('username')));
   const [likeCount, setLikeCount] = useState(post.likes.length);
   const [showComments, setShowComments] = useState(false);
@@ -204,7 +205,7 @@ const PostCard = ({ post, onLike, onComment, onDelete, currentUser }) => {
           </Typography>
           
           {/* Post Image */}
-          {post.imageUrl && (
+          {post.imageUrl && post.imageUrl.trim() !== "" && (
             <Box
               sx={{
                 borderRadius: 2,
@@ -220,6 +221,13 @@ const PostCard = ({ post, onLike, onComment, onDelete, currentUser }) => {
               <img
                 src={`https://socialapp-backend-xtuo.onrender.com/uploads/${post.imageUrl}`}
                 alt="Post"
+                onError={(e) => {
+                  console.log('Image failed to load:', post.imageUrl);
+                  e.target.style.display = 'none';
+                }}
+                onLoad={() => {
+                  console.log('Image loaded successfully:', post.imageUrl);
+                }}
                 style={{
                   width: '100%',
                   height: '100%',
